@@ -3,7 +3,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
-    "start": "expo start --ios --localhost",
+    "start": "expo start --ios",
     "android": "expo start --android --localhost",
     "ios": "expo start --ios",
     "eject": "expo eject"
