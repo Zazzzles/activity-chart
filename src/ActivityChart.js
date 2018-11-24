@@ -7,7 +7,7 @@ import moment from 'moment'
 export default class ActivityChart extends PureComponent {
 
   generateBars = () =>{
-        const { data, barWidth, activeColor, inactiveColor, timeFrame, placeholderStyle, placeholderText, placeholderTextStyle} = this.props
+        const { data, barWidth, timeFrame, placeholderStyle, placeholderText, placeholderTextStyle} = this.props
 
         timeFrameMatcher = {
             '1h': {c: 1, t: 'hour'},
@@ -24,7 +24,7 @@ export default class ActivityChart extends PureComponent {
         data.map((item, index) =>{
         if(moment(item.start).isBetween(moment().subtract(tf.c, tf.t), moment())){
             let activeTime = moment(item.end).diff(moment(item.start), 'seconds')
-            activeTimes.push({activeTime, active: item.active})
+            activeTimes.push({activeTime, active: item.active, color: item.color})
             total += activeTime
         }
         })
@@ -44,7 +44,7 @@ export default class ActivityChart extends PureComponent {
                     <View key={index} style={[
                         styles.chunk,{
                             width: item.perc, 
-                            backgroundColor: item.active ? activeColor : inactiveColor
+                            backgroundColor: item.color
                         }]}>
                     </View>
                 )
@@ -67,11 +67,9 @@ ActivityChart.propTypes = {
     data: PropTypes.arrayOf(PropTypes.shape({
         start: PropTypes.string,
         end: PropTypes.string,
-        active: PropTypes.bool,
+        color: PropTypes.string,
       })), 
-    barWidth: PropTypes.number.isRequired, 
-    activeColor: PropTypes.string.isRequired, 
-    inactiveColor: PropTypes.string.isRequired, 
+    barWidth: PropTypes.number.isRequired,
     timeFrame: PropTypes.oneOf(['1h', '8h', '24h', '1week', '1month']),
     barStyle: PropTypes.object,
     placeholderStyle:  PropTypes.object,
